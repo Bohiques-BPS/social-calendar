@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  app:
+    image: omartinez1618/react-base-mui:v3
+    container_name: base_mui
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/src
+  
