@@ -11,7 +11,7 @@ function useAppContext() {
 const AppContextProvider = ({ children }) => {
   // Values given to the Context
   const [context, setContext] = useState({
-    loading: true,
+    loading: false,
     error: null,
   });
 
