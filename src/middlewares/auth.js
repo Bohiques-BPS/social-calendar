@@ -6,7 +6,7 @@ import { useAppContext } from '../utils/AppContext';
 
 const auth = () =>{
     const [context] = useAppContext()
-    return true
+    
     if( context.session.auth ){
         return true
     }
