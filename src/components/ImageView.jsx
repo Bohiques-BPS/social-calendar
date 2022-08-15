@@ -1,25 +1,28 @@
-import React, {useState} from "react"
-import { Box, Button, IconButton, ImageList, ImageListItem, ImageListItemBar } from "@mui/material"
+import React, {useState, useEffect} from "react"
+import { Grid, Box, Button, IconButton, ImageList, ImageListItem, ImageListItemBar } from "@mui/material"
 import { MoreVert } from "@mui/icons-material"
-import { getList } from '../actions/mockupPost'
 import { useAppContext } from "../utils/AppContext"
 
 export default function ImageView() {
     const [page, setPage] = useState(1);
     const [pages, setPages] = useState(1);
-    const [context, setContext] = useAppContext()
+    const [ pagination, setPagination ] = useState( [1] )
+    const [context] = useAppContext()
+    
 
-    const getData = async () => {
-        const { data } = await getList()
-        setPages(prevPages => (data.length/6))
-        setContext(prevContext => ({
-            ...prevContext,
-            posts:data.map( elem => {elem.load = false; return elem})
-        }))
+    useEffect(() => {
+        setPages(prevPages => (context.posts.length/6))
+        loadPagination( context.posts.length/6 )
+    }, [context.posts]);
+        
+    const loadPagination = ( max ) => {
+        let _pagination = new Array(max)
+        for(let i = 1; i <= max; i++ ){
+            _pagination.push(i)
+        }
+        setPagination( prevPagination => _pagination )
     }
-    
-    
-    (context.posts.length === 0) && getData()
+
 
     const getContentPage = ( post, index ) => {
         const step = context.posts.length / 6
@@ -30,15 +33,15 @@ export default function ImageView() {
         }
     }
 
-    const toStep = (step) => {
+    const toStep = (step) => () => {
         if(( page + step >= 1 ) && ( page + step <= pages ) ) {
             setPage( prevPage => (prevPage + step))
         }
     }
 
-    const actionPost = (id) => (() => {
-        console.log(id)
-    })
+    const actionPost = (id) => () => {
+        console.log('actionPost',id)
+    }
 
     return(
         <Box>
@@ -66,8 +69,22 @@ export default function ImageView() {
                 ))}
             </ImageList>
             <Box>
-                <Button onClick={()=>{toStep(-1)}}>Back</Button>
-                <Button onClick={()=>{toStep(1)}}>Next</Button>
+                <Grid container>
+                    <Grid item xs={4}>
+                        <Button onClick={toStep(-1)}>Back</Button>
+                        <Button onClick={toStep(1)}>Next</Button>
+                    </Grid>
+                    <Grid item xs={8}>
+                        {pagination.map( pag => ( 
+                            <Button 
+                                variant={pag-page===0?"contained":"text"}
+                                key={pag}  
+                                onClick={toStep(pag - page)} 
+                                style={{marginRight:'2px', marginLeft:'2px'}}
+                            >{pag}</Button>
+                        ))}                        
+                    </Grid>
+                </Grid>
             </Box>
         </Box>
     )
