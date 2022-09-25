@@ -10,8 +10,37 @@ export const theme = createTheme({
     },
     typography:{},
     components:{
+        MuiCalendarPicker:{
+            variants: [
+                {
+                    props: {
+                        variant: 'fullwidth'
+                    },
+                    style: {
+                        width: '100%',
+                        backgroundColor: 'white',
+                        'div[role="row"]':{
+                            justifyContent: 'space-between',
+                            marginLeft: '50px',
+                            marginRight: '50px',
+                            PickersDay: {
+                                border: '1px solid red'
+                            },
+                            '.scheduled':{
+                                backgroundColor: '#1976D288'
+                            }
+                        },
+                        '> div:first-of-type':{   
+                            paddingLeft: 0,
+                            paddingRight: 0,
+                            marginLeft: '50px',
+                            marginRight: '50px'
+                        }
+                    }
+                }
+            ]
+        },
         MuiGrid:{
-
             variants:[
                 {
                     props:{
