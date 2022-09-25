@@ -5,8 +5,7 @@ export default async function AxiosRequest(request) {
   axios.defaults.headers.post['Content-Type'] = 'application/json';
 
   try {
-    const response = await axios(request);
-    return response;
+    return await axios(request);
   } catch (error) {
     return { ...error.response, message: error.message };
   }
