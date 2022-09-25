@@ -12,8 +12,18 @@ const AppContextProvider = ({ children }) => {
   // Values given to the Context
   const [context, setContext] = useState({
     posts: [],
-    session: {},
-    loading: false,
+    session: {
+      login: false,
+      facebook: false
+    },
+    loading: true,
+    modal: {
+      open: false,
+      title: '',
+      avatar: null,
+      content: null,
+    },
+    scheduled: null,//(new Array(12).fill([])),
     error: null,
   });
 
