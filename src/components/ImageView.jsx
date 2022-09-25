@@ -1,80 +1,47 @@
 import React, {useState, useEffect} from "react"
 import { Grid, Box, Button, IconButton, ImageList, ImageListItem, ImageListItemBar } from "@mui/material"
-import { MoreVert } from "@mui/icons-material"
 import { useAppContext } from "../utils/AppContext"
 
-export default function ImageView() {
+export default function ImageView( props ) {
+    const {maxPages, onChangePagination, children} = props
     const [page, setPage] = useState(1);
-    const [pages, setPages] = useState(1);
-    const [ pagination, setPagination ] = useState( [1] )
-    const [context] = useAppContext()
+    const [pages, setPages] = useState(maxPages);
+    const [pagination, setPagination ] = useState([1])
+
     
 
     useEffect(() => {
-        setPages(prevPages => (context.posts.length/6))
-        loadPagination( context.posts.length/6 )
-    }, [context.posts]);
+        setPages(prevPages => (maxPages))
+        let _pagination = new Array(maxPages)
+        for(let i = 1; i <= maxPages; i++ ){
+            _pagination[i-1] = i
+        }
+        setPagination( prevPagination => (_pagination))
+    }, [ maxPages ]);
         
-    const loadPagination = ( max ) => {
-        let _pagination = new Array(max)
-        for(let i = 1; i <= max; i++ ){
-            _pagination.push(i)
-        }
-        setPagination( prevPagination => _pagination )
-    }
-
-
-    const getContentPage = ( post, index ) => {
-        const step = context.posts.length / 6
-        const min = 6*(page - 1)
-        const max = min + step
-        if( ( min <= index ) && (index<=max) ){
-            return post;
-        }
-    }
-
+    
     const toStep = (step) => () => {
         if(( page + step >= 1 ) && ( page + step <= pages ) ) {
-            setPage( prevPage => (prevPage + step))
+            setPage( prevPage => {
+                if( onChangePagination ) onChangePagination( prevPage + step );
+                return prevPage + step
+            })
         }
     }
 
-    const actionPost = (id) => () => {
-        console.log('actionPost',id)
-    }
 
     return(
         <Box>
-            <ImageList rowHeight={280} >
-                { context.posts.filter( getContentPage ).map( (post,index) => ( 
-                    <ImageListItem key={post.id} >
-                        <img 
-                            src={post.download_url}
-                            alt={post.author}
-                            loading="lazy"
-                            style={{
-                                height: 280
-                            }}
-                        />
-                        <ImageListItemBar
-                            title={'Author: '+post.author}
-                            subtitle={"Image from Picsum "}
-                            actionIcon={
-                                <IconButton onClick={actionPost(post.id)}>
-                                    <MoreVert sx={{color:"white"}}></MoreVert>
-                                </IconButton>
-                            }
-                        />
-                    </ImageListItem>
-                ))}
+            <ImageList rowHeight={280} {...props}>
+                {children}
             </ImageList>
             <Box>
                 <Grid container>
-                    <Grid item xs={4}>
+                    <Grid item xs={4} style={{display:'flex', alignItems:'center', justifyContent:'space-evenly'}}>
                         <Button onClick={toStep(-1)}>Back</Button>
                         <Button onClick={toStep(1)}>Next</Button>
                     </Grid>
-                    <Grid item xs={8}>
+                    <Grid item xs={8} style={{paddingBottom:'10px'}}>
                         {pagination.map( pag => ( 
                             <Button 
                                 variant={pag-page===0?"contained":"text"}
