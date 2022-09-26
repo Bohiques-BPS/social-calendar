@@ -7,16 +7,16 @@ export default function InputTime({ children, onIncrement, onDecrement, value, m
 
     const increment = () => {
         const newValue = parseInt(value) + 1
-        if( max && newValue > max ) onIncrement( min )
+        if( typeof(max)==='number' && typeof(min)==='number' && newValue > max ) onIncrement( min )
+        else if( typeof(min)==='number' && newValue > max ) onIncrement( max )
         else onIncrement( newValue )
-        
     }
 
     const decrement = () => {
         const newValue = parseInt(value) - 1
-        if( min && newValue < min ) onIncrement( max )
-        else onIncrement( newValue )
-        
+        if( typeof(max)==='number' && typeof(min)==='number' && newValue < min ) onDecrement( max )
+        else if( typeof(min)==='number' && newValue < min ) onDecrement( min )
+        else onDecrement( newValue )
     }    
 
     return(

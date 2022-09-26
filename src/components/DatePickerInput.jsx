@@ -4,7 +4,7 @@ import { InputTime } from './index'
 import { MaskString } from './index'
 
 
-export default function DatePickerInput({ date, onPicker }) {
+export default function DatePickerInput({ date, onPicker, minYear, maxYear }) {
 
     const [ day, setDay ] = React.useState(new Date( date ? date : Date.now() ).getDate() )
     const [ month, setMonth ] = React.useState((new Date( date ? date : Date.now() ).getMonth()) + 1)
@@ -46,8 +46,8 @@ export default function DatePickerInput({ date, onPicker }) {
             <InputTime 
                 onIncrement={setYear} 
                 onDecrement={setYear}
-                min={new Date().getFullYear()}
-                // max={new Date().getFullYear() + 1}
+                min={ minYear || 0 }
+                max={ maxYear }
                 value={year}
             >{year}</InputTime>
         </Box>

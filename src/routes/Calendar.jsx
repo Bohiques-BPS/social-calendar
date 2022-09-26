@@ -27,6 +27,7 @@ export default function Calendar() {
                     <CalendarPicker
                         variant="fullwidth"
                         date={value}
+                        disablePast
                         views={['day']}
                         onMonthChange={ newDate => {
                             setMonth(prevMonth => (newDate.month()+1)); 
