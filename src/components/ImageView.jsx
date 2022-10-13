@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react"
-import { Grid, Box, Button, IconButton, ImageList, ImageListItem, ImageListItemBar } from "@mui/material"
-import { useAppContext } from "../utils/AppContext"
+import { Grid, Box, Button, ImageList } from "@mui/material"
 
 export default function ImageView( props ) {
     const {maxPages, onChangePagination, children} = props

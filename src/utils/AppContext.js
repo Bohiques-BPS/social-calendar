@@ -16,6 +16,7 @@ const AppContextProvider = ({ children }) => {
       login: false,
       facebook: false
     },
+    domains: null,
     loading: true,
     modal: {
       open: false,

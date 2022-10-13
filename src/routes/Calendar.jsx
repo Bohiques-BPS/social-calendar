@@ -22,45 +22,49 @@ export default function Calendar() {
             <Grid item xs={2}>
                 <Lateral />
             </Grid>
-            <Grid item xs={7}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <CalendarPicker
-                        variant="fullwidth"
-                        date={value}
-                        disablePast
-                        views={['day']}
-                        onMonthChange={ newDate => {
-                            setMonth(prevMonth => (newDate.month()+1)); 
-                            setYear(prevYear => newDate.year())
-                        } }                        
-                        onChange={(newDate) => setValue( prevDate => (newDate)) }
-                        renderDay={(day, selectedDate, DayComponentProps) => <RenderDay day={day} selectedDate={selectedDate} DayComponentProps={DayComponentProps} />}/>
-                </LocalizationProvider>
-            </Grid>
-            <Grid item xs={3}>
-                <Box>
-                    <Typography variant='h6'>Schedules {month}</Typography>
-                    <List>
-                    {
-                        context.scheduled
-                            .filter( (months, index) => ( (index+1)===parseInt(month) ) )[0]
-                            .filter( schedule => schedule.year===year )
-                            .sort( (primarySchedule, secondSchedule) => {
-                                if( primarySchedule && secondSchedule ){
-                                    const primaryDate = dayjs( primarySchedule.date )
-                                    const secondDate = dayjs( secondSchedule.date )
-                                    if( primaryDate.isBefore( secondDate ) ) return -1
-                                    else if( primaryDate.isSame( secondDate ) ) return 0
-                                    else return 1
-                                }
-                                return 1
-                            } )
-                            .map( schedule => (
-                                <ScheduleList key={schedule.date} date={schedule.date} target={schedule.target} />
-                            ) )                      
-                    }
-                    </List>
-                </Box>
+            <Grid item xs={10}>
+                <Grid container>
+                    <Grid item md={7} xs={10}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <CalendarPicker
+                                variant="fullwidth"
+                                date={value}
+                                disablePast
+                                views={['day']}
+                                onMonthChange={ newDate => {
+                                    setMonth(prevMonth => (newDate.month()+1)); 
+                                    setYear(prevYear => newDate.year())
+                                } }                        
+                                onChange={(newDate) => setValue( prevDate => (newDate)) }
+                                renderDay={(day, selectedDate, DayComponentProps) => <RenderDay day={day} selectedDate={selectedDate} DayComponentProps={DayComponentProps} />}/>
+                        </LocalizationProvider>
+                    </Grid>
+                    <Grid item md={3} xs={10}>
+                        <Box>
+                            <Typography variant='h6'>Schedules {month}</Typography>
+                            <List>
+                            {
+                                context.scheduled
+                                    .filter( (months, index) => ( (index+1)===parseInt(month) ) )[0]
+                                    .filter( schedule => schedule.year===year )
+                                    .sort( (primarySchedule, secondSchedule) => {
+                                        if( primarySchedule && secondSchedule ){
+                                            const primaryDate = dayjs( primarySchedule.date )
+                                            const secondDate = dayjs( secondSchedule.date )
+                                            if( primaryDate.isBefore( secondDate ) ) return -1
+                                            else if( primaryDate.isSame( secondDate ) ) return 0
+                                            else return 1
+                                        }
+                                        return 1
+                                    } )
+                                    .map( schedule => (
+                                        <ScheduleList key={schedule.date} date={schedule.date} target={schedule.target} />
+                                    ) )                      
+                            }
+                            </List>
+                        </Box>
+                    </Grid> 
+                </Grid>
             </Grid>
         </Grid>
     );

@@ -40,7 +40,7 @@ export default function DatePickerInput({ date, onPicker, minYear, maxYear }) {
                 max={12}
                 value={month}
             >
-                <MaskString pattern={String(month).length==2?'##':'0#'} content={String(month)} />
+                <MaskString pattern={String(month).length===2?'##':'0#'} content={String(month)} />
             </InputTime>
             <Typography>/</Typography>
             <InputTime 

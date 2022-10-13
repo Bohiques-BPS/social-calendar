@@ -60,7 +60,7 @@ export default function TimePickerInput({ time, format, onPicker }) {
                 min={ minHour() }
                 value={hour}
             >
-                <MaskString pattern={String(hour).length==2?'##':'0#'} content={String(hour)} />
+                <MaskString pattern={String(hour).length===2?'##':'0#'} content={String(hour)} />
             </InputTime>
             <Typography>:</Typography>
             <InputTime 
@@ -70,7 +70,7 @@ export default function TimePickerInput({ time, format, onPicker }) {
                 min={0}
                 value={minute}
             >
-                <MaskString pattern={String(minute).length==2?'##':'0#'} content={String(minute)} />
+                <MaskString pattern={String(minute).length===2?'##':'0#'} content={String(minute)} />
             </InputTime>
             <Typography>:</Typography>
             <InputTime 
@@ -80,7 +80,7 @@ export default function TimePickerInput({ time, format, onPicker }) {
                 min={0}
                 value={seconds}
             >
-                <MaskString pattern={String(seconds).length==2?'##':'0#'} content={String(seconds)} />
+                <MaskString pattern={String(seconds).length===2?'##':'0#'} content={String(seconds)} />
             </InputTime>
             { format==='12H' && 
                 (<InputTime 

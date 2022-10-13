@@ -15,6 +15,9 @@ import { Loader, Navigation } from "./components";
 import { init, login, getLoginStatus, getMe } from './utils/Facebook'
 import { useAppContext } from './utils/AppContext'
 import { getSchedule } from './actions';
+import ScheduleHistory from './routes/ScheduleHistory';
+import ImportRemoteImage from './routes/ImportRemoteImage';
+import { getDomains } from './actions/domains';
 
 export default function App() {
   const location  = useLocation()
@@ -26,18 +29,22 @@ export default function App() {
   useEffect(()=>{
     setEnableNavigation( prevEnableNavigation => {
       return [
-        '/'
+        '/',
+        '/login',
+        '/history',
+        '/import',
       ].indexOf(location.pathname) !== -1
     } )
 
   },[location.pathname])
 
 
-  const navigationTabs = ['tab1', 'tab2', 'tab3'];
+  const navigationTabs = ['Calendar', 'History', 'Import', 'Login'];
   
   const handleChangeTab = ( event, newTab ) => {
     console.log(newTab)
     setTab( prevTab => (newTab) )
+    navigate(['/', '/history', '/import', '/login'][newTab])
   }
 
   const normalLogin = async () => {
@@ -58,6 +65,14 @@ export default function App() {
   }
 
   (async () => {
+    if(context.domains === null){
+      const domains = await getDomains() 
+      setContext( prevContext => ({
+        ...prevContext,
+        domains: domains,
+        loading: false
+      }))
+    }
     if(context.scheduled === null ){
       const scheduled = await getSchedule() 
       setContext( prevContext => ({
@@ -72,7 +87,7 @@ export default function App() {
   return (
       <ThemeProvider theme={theme}>
         <Loader>
-          { enableNavigation && <Navigation onChange={ handleChangeTab } style={{backgroundColor:'#eee'}}>
+          { enableNavigation && <Navigation onChange={ handleChangeTab } value={tab} style={{backgroundColor:'#eee'}}>
             { navigationTabs.map( (nameTab, index) => (
               <Tab 
                 label={nameTab} 
@@ -82,7 +97,10 @@ export default function App() {
             ) ) }
           </Navigation>}
             <Routes>
+              <Route path="/login" element={ <Login /> }/>
               <Route path="/" element={ <Calendar /> }/>
+              <Route path="/history" element={ <ScheduleHistory /> }/>
+              <Route path="/import" element={ <ImportRemoteImage /> }/>
             </Routes>
         </Loader>
         <AppModal open={ context.modal.open }>
