@@ -23,7 +23,10 @@ export default function ScheduleList({ date, details, target }){
                                 items={[
                                     <Facebook   color={target.facebook ? 'primary' : ''}/>, 
                                     <Instagram  color={target.instagram ? 'primary' : ''}/>, 
-                                    <Twitter    color={target.twitter ? 'primary' : ''}/>]} />}
+                                    <Twitter    color={target.twitter ? 'primary' : ''}/>
+                                ]}
+                            />
+                        }
                     />
                 )
             }            

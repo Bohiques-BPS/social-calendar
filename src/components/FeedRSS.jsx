@@ -17,6 +17,6 @@ export default function FeedRSS({items, onSelect, selected}){
     }
 
     return(<Box>
-        {items.map( (item, index) => (renderIcon(item, index, selected)))}
+        {items.map( (item, index) => (renderIcon(item, index, item.props.color)))}
     </Box>)
 }
